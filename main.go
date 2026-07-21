@@ -19,5 +19,4 @@ func main() {
 	log.Printf("Environment: %s, LogLevel: %s",
 		cfg.Monitor.Environment,
 		cfg.Monitor.LogLevel)
-
 }
