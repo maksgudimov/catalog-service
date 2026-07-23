@@ -1,10 +1,22 @@
 package main
 
 import (
-	"fmt"
+	"log"
+
+	"github.com/maksgudimov/catalog-service/internal/app/config"
+	rhealth "github.com/maksgudimov/catalog-service/internal/app/handler/http/health"
+	rprocessor "github.com/maksgudimov/catalog-service/internal/app/processor/http"
 )
 
 func main() {
-	s := "gopher"
-	fmt.Printf("Hello and welcome, %s!\n", s)
+	config.Load()
+
+	cfg := config.Root
+
+	hHealth := rhealth.NewHandler()
+
+	httpServer := rprocessor.NewHTTP(hHealth, cfg.Processor.WebServer)
+	if err := httpServer.Serve(); err != nil {
+		log.Fatalf("HTTP server failed: %v", err)
+	}
 }
