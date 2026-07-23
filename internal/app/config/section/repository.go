@@ -14,7 +14,7 @@ type (
 		Username     string        `required:"true"`
 		Password     string        `required:"true"`
 		Name         string        `required:"true"`
-		ReadTimeout  time.Duration `default:"5s" split_words:"true"`
-		WriteTimeout time.Duration `default:"5s" split_words:"true"`
+		ReadTimeout  time.Duration `default:"30s" split_words:"true"`
+		WriteTimeout time.Duration `default:"30s" split_words:"true"`
 	}
 )
