@@ -26,7 +26,6 @@ func NewHTTP(hHealth rhandler.Health, cfg section.ProcessorWebServer) *httpProc 
 	p.server.Handler = r
 
 	return &p
-
 }
 
 func (p *httpProc) Serve() error {
