@@ -1,4 +1,4 @@
-package rhanlder
+package rhandler
 
 import "net/http"
 
