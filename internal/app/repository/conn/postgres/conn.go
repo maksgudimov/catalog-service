@@ -99,7 +99,6 @@ func (c *Client) Migrate(ctx context.Context) (oldVer, newVer int64, err error) 
 	}
 
 	return oldVer, newVer, nil
-
 }
 
 func generateDsn(cfg section.RepositoryPostgres) string {
