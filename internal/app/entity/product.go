@@ -17,8 +17,6 @@ type Product struct {
 	Price        int64     `bun:"price"`
 	CategoryGUID uuid.UUID `bun:"category_guid"`
 
-	Category *Category `bun:"rel:belongs-to,join:category_guid=guid"`
-
 	CreatedAt time.Time `bun:"created_at"`
 	UpdatedAt time.Time `bun:"updated_at"`
 }
