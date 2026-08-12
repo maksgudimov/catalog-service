@@ -85,7 +85,6 @@ func (s *srv) Update(ctx context.Context, guid uuid.UUID, req entity.RequestCate
 	}
 
 	return category[0], nil
-
 }
 
 func (s *srv) Delete(ctx context.Context, guid uuid.UUID) error {
@@ -110,7 +109,6 @@ func (s *srv) Delete(ctx context.Context, guid uuid.UUID) error {
 	}
 
 	return nil
-
 }
 
 func (s *srv) List(ctx context.Context) ([]entity.Category, error) {
