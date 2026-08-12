@@ -101,12 +101,14 @@ func (h *handler) Delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *handler) List(w http.ResponseWriter, r *http.Request) {
-	var resp entity.ResponseCategoryList
-
 	categories, err := h.srv.List(r.Context())
 	if err != nil {
 		httph.HandleError(w, err)
 		return
+	}
+
+	resp := entity.ResponseCategoryList{
+		Data: make([]entity.ResponseCategoryListItem, 0, len(categories)),
 	}
 
 	for _, category := range categories {

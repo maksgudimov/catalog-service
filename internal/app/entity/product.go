@@ -33,7 +33,7 @@ type RequestProductCreate struct {
 }
 
 func (r RequestProductCreate) Validate() error {
-	if r.Name == "" || r.Price < 0 || r.CategoryGUID.IsNil() {
+	if r.Name == "" || r.Price <= 0 || r.CategoryGUID.IsNil() {
 		return ErrIncorrectParameters
 	}
 	return nil
@@ -47,7 +47,7 @@ type RequestProductUpdate struct {
 }
 
 func (r RequestProductUpdate) Validate() error {
-	if r.Price != nil && *r.Price < 0 {
+	if r.Price != nil && *r.Price <= 0 {
 		return ErrIncorrectParameters
 	}
 	return nil

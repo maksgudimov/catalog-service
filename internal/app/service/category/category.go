@@ -76,7 +76,8 @@ func (s *srv) Update(ctx context.Context, guid uuid.UUID, req entity.RequestCate
 			return entity.Category{}, entity.ErrAlreadyExists
 		}
 	}
-
+	now := time.Now()
+	category[0].UpdatedAt = now
 	category[0].Name = req.Name
 
 	err = s.repoCategory.Update(ctx, category[0])
