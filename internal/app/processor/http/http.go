@@ -16,10 +16,21 @@ type httpProc struct {
 	addr   string
 }
 
-func NewHTTP(hHealth rhandler.Health, cfg section.ProcessorWebServer) *httpProc {
+func NewHTTP(
+	hHealth rhandler.Health,
+	hCategory rhandler.Category,
+	hProduct rhandler.Product,
+	cfg section.ProcessorWebServer,
+) *httpProc {
 	r := mux.NewRouter()
 	r.NotFoundHandler = http.HandlerFunc(handlerNotFound)
+
 	vGenericRegHealthCheck(r, hHealth)
+
+	rV1 := r.PathPrefix("/v1").Subrouter()
+	v1RegCategoryHandler(rV1, hCategory)
+	v1RegProductHandler(rV1, hProduct)
+
 	_ = r.Walk(logWalkRoutes)
 	p := httpProc{addr: fmt.Sprintf(":%d", cfg.ListenPort)}
 	p.server.Addr = p.addr
