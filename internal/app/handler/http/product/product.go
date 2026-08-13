@@ -124,7 +124,9 @@ func (h *handler) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var resp entity.ResponseProductList
+	resp := entity.ResponseProductList{
+		Data: make([]entity.ResponseProductListItem, 0, len(products)),
+	}
 
 	for _, product := range products {
 		resp.Data = append(resp.Data, entity.ResponseProductListItem{
