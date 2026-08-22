@@ -5,11 +5,11 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/gorilla/mux"
-	"github.com/maksgudimov/catalog-service/internal/pkg/http/binding"
 
 	"github.com/maksgudimov/catalog-service/internal/app/entity"
 	rhandler "github.com/maksgudimov/catalog-service/internal/app/handler/http"
 	"github.com/maksgudimov/catalog-service/internal/app/service"
+	"github.com/maksgudimov/catalog-service/internal/pkg/http/binding"
 	"github.com/maksgudimov/catalog-service/internal/pkg/http/httph"
 )
 
