@@ -1,7 +1,6 @@
 package binding
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/go-playground/form/v4"
@@ -17,14 +16,22 @@ func (queryBinding) Name() string {
 
 func (queryBinding) Bind(req *http.Request, obj any) error {
 	if req == nil || req.URL == nil {
-		return errors.New("invalid request")
+		return &bindingError{
+			msg: "invalid request",
+		}
 	}
 
-	values := req.URL.Query()
-
-	if err := formDecoder.Decode(obj, values); err != nil {
-		return err
+	if err := formDecoder.Decode(obj, req.URL.Query()); err != nil {
+		return &bindingError{
+			msg: err.Error(),
+		}
 	}
 
-	return validate(obj)
+	if err := validate(obj); err != nil {
+		return &bindingError{
+			msg: err.Error(),
+		}
+	}
+
+	return nil
 }

@@ -5,8 +5,6 @@ import (
 	"sync"
 
 	"github.com/go-playground/validator/v10"
-
-	"github.com/maksgudimov/catalog-service/internal/app/entity"
 )
 
 type defaultValidator struct {
@@ -44,8 +42,5 @@ func (v *defaultValidator) ValidateStruct(obj any) error {
 		return nil
 	}
 	v.lazyInit()
-	if err := v.validate.Struct(obj); err != nil {
-		return entity.ErrIncorrectParameters
-	}
-	return nil
+	return v.validate.Struct(obj)
 }
