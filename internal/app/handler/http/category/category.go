@@ -1,7 +1,6 @@
 package hcategory
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/gofrs/uuid"
@@ -10,6 +9,7 @@ import (
 	"github.com/maksgudimov/catalog-service/internal/app/entity"
 	rhandler "github.com/maksgudimov/catalog-service/internal/app/handler/http"
 	"github.com/maksgudimov/catalog-service/internal/app/service"
+	"github.com/maksgudimov/catalog-service/internal/pkg/http/binding"
 	"github.com/maksgudimov/catalog-service/internal/pkg/http/httph"
 )
 
@@ -23,12 +23,8 @@ func NewHandler(srv service.Category) rhandler.Category {
 
 func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	var req entity.RequestCategoryCreate
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		httph.HandleError(w, entity.ErrIncorrectParameters)
-		return
-	}
 
-	if err := req.Validate(); err != nil {
+	if err := binding.ScanAndValidateJSON(r, &req); err != nil {
 		httph.HandleError(w, err)
 		return
 	}
@@ -50,6 +46,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 
 func (h *handler) Update(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
+
 	guid, err := uuid.FromString(vars["guid"])
 	if err != nil {
 		httph.HandleError(w, entity.ErrIncorrectParameters)
@@ -57,12 +54,8 @@ func (h *handler) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req entity.RequestCategoryUpdate
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		httph.HandleError(w, entity.ErrIncorrectParameters)
-		return
-	}
 
-	if err := req.Validate(); err != nil {
+	if err := binding.ScanAndValidateJSON(r, &req); err != nil {
 		httph.HandleError(w, err)
 		return
 	}

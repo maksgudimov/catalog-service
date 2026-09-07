@@ -24,7 +24,7 @@ func NewService(repoCategory repository.Category, repoProduct repository.Product
 }
 
 func (s *srv) Create(ctx context.Context, req entity.RequestProductCreate) (entity.Product, error) {
-	existing, err := s.repoProduct.List(ctx, &req.Name, nil)
+	existing, err := s.repoProduct.List(ctx, &req.Name, nil, nil, nil)
 	if err != nil {
 		return entity.Product{}, err
 	}
@@ -79,7 +79,7 @@ func (s *srv) Update(ctx context.Context, guid uuid.UUID, req entity.RequestProd
 	}
 
 	if req.Name != nil {
-		existing, err := s.repoProduct.List(ctx, req.Name, nil)
+		existing, err := s.repoProduct.List(ctx, req.Name, nil, nil, nil)
 		if err != nil {
 			return entity.Product{}, err
 		}
@@ -142,7 +142,7 @@ func (s *srv) Delete(ctx context.Context, guid uuid.UUID) error {
 }
 
 func (s *srv) List(ctx context.Context, req entity.RequestProductList) ([]entity.Product, error) {
-	products, err := s.repoProduct.List(ctx, nil, req.CategoryGUID)
+	products, err := s.repoProduct.List(ctx, nil, req.CategoryGUID, req.MinPrice, req.MaxPrice)
 	if err != nil {
 		return []entity.Product{}, err
 	}
