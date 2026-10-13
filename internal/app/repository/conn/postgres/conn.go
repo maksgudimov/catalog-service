@@ -4,11 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"net/url"
 	"strconv"
 	"time"
 
+	"github.com/rs/zerolog/log"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
@@ -33,7 +33,7 @@ func (c *Client) GetRawBunDB() *bun.DB {
 }
 
 func (c *Client) Migrate(ctx context.Context) (oldVer, newVer int64, err error) {
-	log.Printf("Starting database migrations...")
+	log.Info().Msg("Starting database migrations")
 
 	migrations := migrate.NewMigrations()
 	if err = migrations.Discover(migration.Postgres); err != nil {
@@ -50,7 +50,7 @@ func (c *Client) Migrate(ctx context.Context) (oldVer, newVer int64, err error) 
 	if err = migrator.Init(ctx); err != nil {
 		return 0, 0, fmt.Errorf("failed to init migrations table: %w", err)
 	}
-	log.Printf("Migrations table initialized: %s", c.cfg.MigrationTable)
+	log.Info().Str("table", c.cfg.MigrationTable).Msg("Migrations table initialized")
 
 	applied, err := migrator.AppliedMigrations(ctx)
 	if err != nil {
@@ -74,9 +74,12 @@ func (c *Client) Migrate(ctx context.Context) (oldVer, newVer int64, err error) 
 		}
 		if newVerMaxValue > newVer {
 			newVer = newVerMaxValue
-			log.Printf("Database migrations completed: version %d -> %d", oldVer, newVer)
+			log.Info().
+				Int64("old_version", oldVer).
+				Int64("new_version", newVer).
+				Msg("Database migrations completed")
 		} else {
-			log.Printf("No new migrations")
+			log.Info().Msg("No new migrations")
 		}
 
 	}
@@ -113,7 +116,7 @@ func NewClient(ctx context.Context, cfg section.RepositoryPostgres) (*Client, er
 		return nil, fmt.Errorf("failed to create bun.DB: bun returned nil")
 	}
 
-	log.Printf("Pinging database with timeout 2s...")
+	log.Info().Dur("timeout", 2*time.Second).Msg("Pinging database")
 
 	ctxTimeout, cancel := context.WithTimeout(ctx, 2*time.Second)
 	defer cancel()
@@ -122,7 +125,7 @@ func NewClient(ctx context.Context, cfg section.RepositoryPostgres) (*Client, er
 		return nil, fmt.Errorf("failed to connect to the database at %s: %w", cfg.Address, err)
 	}
 
-	log.Printf("Database ping successful")
+	log.Info().Msg("Database ping successful")
 
 	return &Client{
 		_bunDB:   db,

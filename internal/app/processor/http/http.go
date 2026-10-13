@@ -2,10 +2,13 @@ package rprocessor
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/maksgudimov/catalog-service/internal/app/util"
+	"github.com/maksgudimov/catalog-service/internal/pkg/http/httph"
+	"github.com/maksgudimov/catalog-service/internal/pkg/http/mzerolog"
+	"github.com/rs/zerolog/log"
 
 	"github.com/maksgudimov/catalog-service/internal/app/config/section"
 	rhandler "github.com/maksgudimov/catalog-service/internal/app/handler/http"
@@ -25,6 +28,13 @@ func NewHTTP(
 	r := mux.NewRouter()
 	r.NotFoundHandler = http.HandlerFunc(handlerNotFound)
 
+	r.Use(
+		httph.NewErrorMiddleware(),
+		mzerolog.NewMiddleware(
+			mzerolog.WithSkipper(util.IsFilteredHttpRoute),
+		),
+	)
+
 	vGenericRegHealthCheck(r, hHealth)
 
 	rV1 := r.PathPrefix("/v1").Subrouter()
@@ -40,6 +50,6 @@ func NewHTTP(
 }
 
 func (p *httpProc) Serve() error {
-	log.Printf("Starting HTTP server on %s", p.addr)
+	log.Info().Str("address", p.addr).Msg("Starting HTTP server")
 	return p.server.ListenAndServe()
 }

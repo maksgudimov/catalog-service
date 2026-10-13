@@ -1,10 +1,10 @@
 package rprocessor
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/zerolog/log"
 )
 
 func reg(r *mux.Router, method, path string, handler http.Handler) {
@@ -20,6 +20,6 @@ func logWalkRoutes(route *mux.Route, router *mux.Router, ancestors []*mux.Route)
 	if len(methods) == 0 {
 		return nil
 	}
-	log.Printf("Registered route: %s %s", methods, path)
+	log.Info().Strs("methods", methods).Str("path", path).Msg("Registered route")
 	return nil
 }
