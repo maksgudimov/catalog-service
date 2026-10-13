@@ -5,13 +5,13 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/maksgudimov/catalog-service/internal/app/util"
-	"github.com/maksgudimov/catalog-service/internal/pkg/http/httph"
-	"github.com/maksgudimov/catalog-service/internal/pkg/http/mzerolog"
 	"github.com/rs/zerolog/log"
 
 	"github.com/maksgudimov/catalog-service/internal/app/config/section"
 	rhandler "github.com/maksgudimov/catalog-service/internal/app/handler/http"
+	"github.com/maksgudimov/catalog-service/internal/app/util"
+	"github.com/maksgudimov/catalog-service/internal/pkg/http/httph"
+	"github.com/maksgudimov/catalog-service/internal/pkg/http/mzerolog"
 )
 
 type httpProc struct {

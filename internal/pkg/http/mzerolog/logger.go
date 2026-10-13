@@ -5,9 +5,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/maksgudimov/catalog-service/internal/pkg/http/httph"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+
+	"github.com/maksgudimov/catalog-service/internal/pkg/http/httph"
 )
 
 type middleware struct {
