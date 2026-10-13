@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
-	"github.com/rs/zerolog/log"
 	"os"
+
+	"github.com/rs/zerolog/log"
 
 	"github.com/maksgudimov/catalog-service/internal/app/config"
 	hcategory "github.com/maksgudimov/catalog-service/internal/app/handler/http/category"
